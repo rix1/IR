@@ -18,13 +18,17 @@ import org.apache.lucene.document.Field.Store;
  * All `from', `subject', and `contents' should be searchable, i.e. store their re- spective term vectors. 
  * Look at the given `NewsDocument' class that reads a text file and has better methods for `from', `subject', and `contents'.
  *
+ * =============
+ *
+ * I think this page contains relevant info: 
+ * http://lucene.apache.org/core/3_0_3/fileformats.html 
+ *
  */
 
 
 public class MyDocument {
 
-	public static Document Document(File f)
-			throws java.io.FileNotFoundException {
+	public static Document Document (File f) throws java.io.FileNotFoundException {
 
 		// make a new, empty document
 		Document doc = new Document();
