@@ -1,9 +1,12 @@
 package oving4;
 
+import java.awt.Frame;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
+
+import javax.swing.JOptionPane;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexWriter;
@@ -15,23 +18,40 @@ public class MyIndexFiles {
 	public MyIndexFiles() {
 	}
 
-	static final File INDEX_DIR = new File("index");
+	// You have to change this path
+	static final File INDEX_DIR = new File("/Users/rikardeide/Documents/Programmering/Informasjonsgjenfinning/");
 
 	/** Index all text files under a directory. */
 	public static void main(String[] args) {
 		String usage = "java org.apache.lucene.demo.IndexFiles <root_directory>";
+		
+		
+/*
 		if (args.length == 0) {
 			System.err.println("Usage: " + usage);
 			System.exit(1);
 		}
-
+*/
 		if (INDEX_DIR.exists()) {
-			System.out.println("Cannot save index to '" + INDEX_DIR
-					+ "' directory, please delete it first");
-			System.exit(1);
+			
+			Frame frame = new Frame();
+			
+			Object[] options = {"Yesh master Java","No! You silly fuck"};
+			int n = JOptionPane.showOptionDialog(frame, "The current Index directory already exists, shall I delete it?", "A Silly Question", 
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+			
+			if(n==0)
+				INDEX_DIR.delete();
+			else{
+				System.out.println("Cannot save index to '" + INDEX_DIR
+						+ "' directory, please delete it first");
+				System.exit(1);
+			}
 		}
-
-		final File docDir = new File(args[0]);
+		
+		// You have to change this path	
+		final File docDir = new File("/Users/rikardeide/Documents/Programmering/Informasjonsgjenfinning/files");
+		
 		if (!docDir.exists() || !docDir.canRead()) {
 			System.out
 					.println("Document directory '"
@@ -46,7 +66,9 @@ public class MyIndexFiles {
 					new StandardAnalyzer(Version.LUCENE_CURRENT), true,
 					IndexWriter.MaxFieldLength.LIMITED);
 			System.out.println("Indexing to directory '" + INDEX_DIR + "'...");
+		
 			indexDocs(writer, docDir);
+		
 			System.out.println("Optimizing...");
 			writer.optimize();
 			writer.close();
@@ -64,6 +86,8 @@ public class MyIndexFiles {
 	static void indexDocs(IndexWriter writer, File file) throws IOException {
 		// do not try to index files that cannot be read
 		if (file.canRead()) {
+			
+			// This will recursively get all files from all sub directories. 
 			if (file.isDirectory()) {
 				String[] files = file.list();
 				// an IO error could occur

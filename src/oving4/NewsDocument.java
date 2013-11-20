@@ -60,4 +60,7 @@ public class NewsDocument {
 	public String getSubject() {
 		return subject;
 	}
+	public String getPath(){
+		return path;
+	}
 }
